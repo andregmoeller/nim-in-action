@@ -1,4 +1,4 @@
-import os
+import os, threadpool
 
 echo("Chat application started")
 
@@ -9,5 +9,5 @@ let serverAddr = paramStr(1)
 echo("Connecting to", serverAddr)
 
 while true:
-    let message = stdin.readLine()
-    echo("Sending \"", message, "\"")
+    let message = spawn stdin.readLine()
+    echo("Sending \"", ^message, "\"")
