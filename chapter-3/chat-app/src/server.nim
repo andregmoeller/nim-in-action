@@ -19,8 +19,15 @@ proc loop(server: Server, port = 7687) {.async.} =
     server.socket.listen()
 
     while true:
-        let clientSocket = await server.socket.accept()
-        echo("Accepted connection!")
+        let (netAddr, clientSocket) = await server.socket.acceptAddr()
+        echo("Accepted connection from ", netAddr)
+        let client = Client(
+            socket: clientSocket,
+            netAddr: netAddr,
+            id: server.clients.len,
+            connected: true
+        )
+        server.clients.add(client)
 
 when isMainModule:
     var server = newServer()
