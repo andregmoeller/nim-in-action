@@ -21,6 +21,12 @@ let serverAddr = paramStr(1)
 var socket = newAsyncSocket()
 asyncCheck connect(socket, serverAddr)
 
+var messageFlowVar = spawn stdin.readLine()
+
 while true:
-    let message = spawn stdin.readLine()
-    echo("Sending \"", ^message, "\"")
+    if messageFlowVar.isReady():
+        let message = createMessage("Anonymous", ^messageFlowVar)
+        asyncCheck socket.send(message)
+        messageFlowVar = spawn stdin.readLine()
+
+    asyncdispatch.poll()
