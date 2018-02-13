@@ -14,6 +14,19 @@ type
 proc newServer(): Server = 
     Server(socket: newAsyncSocket(), clients: @[])
 
+proc `$`(client: Client): string =
+    $client.id & "(" & client.netAddr & ")"
+
+proc processMessages(server: Server, client: Client) {.async.} =
+    while true:
+        let line = await client.socket.recvLine()
+        if line.len == 0:
+            echo(client, " disconnected!")
+            client.connected = false
+            client.socket.close()
+            return
+        echo(client, " sent: ", line)
+
 proc loop(server: Server, port = 7687) {.async.} =
     server.socket.bindAddr(port.Port)
     server.socket.listen()
@@ -28,6 +41,7 @@ proc loop(server: Server, port = 7687) {.async.} =
             connected: true
         )
         server.clients.add(client)
+        asyncCheck processMessages(server, client)
 
 when isMainModule:
     var server = newServer()
