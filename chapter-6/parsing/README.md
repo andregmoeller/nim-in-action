@@ -19,3 +19,12 @@ To compile and execute the example run:
 ```Shell
 nim c -r src/parse_split.nim
 ```
+
+## parse_parseutils
+
+This example shows how to parse data using the parseutils module.
+
+To compile and execute the example run:
+```Shell
+nim c -r src/parse_parseutils.nim
+```
