@@ -10,3 +10,12 @@ To compile and execute run:
 ```Shell
 nim c --threads:on -r src/guard_locks.nim
 ```
+
+## channel
+
+This example demonstrates how to use a channel to send and receive data.
+
+To compile and execute run:
+```Shell
+nim c --threads:on -r src/channel.nim
+```
