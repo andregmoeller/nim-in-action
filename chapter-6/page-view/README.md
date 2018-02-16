@@ -6,5 +6,5 @@ This directory contains an application that parses Wikipedia’s page-view data 
 
 To compile and execute the application run (the extracted Wikipedia file must be in the same directory):
 ```Shell
-nim c -r src/page_view.nim
+nim c -d:release -r src/page_view.nim
 ```

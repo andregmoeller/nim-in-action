@@ -19,10 +19,14 @@ proc readPageCounts(filename: string) =
     var pageTitle = ""
     var countViews = 0
     var totalSize = 0
+    var mostPopular = ("", "", 0, 0)
 
     for line in filename.lines:
         parse(line, domainCode, pageTitle, countViews, totalSize)
-        echo("Title: ", pageTitle)
+        if domainCode == "en" and countViews > mostPopular[2]:
+            mostPopular = (domainCode, pageTitle, countViews, totalSize)
+    
+    echo("Most popular is: ", mostPopular)
 
 when isMainModule:
     const file = "pagecounts-20160101-050000"
