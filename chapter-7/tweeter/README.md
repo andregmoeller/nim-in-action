@@ -9,6 +9,11 @@ To setup the [SQLite](https://www.sqlite.org/index.html) database run:
 nimble c -r src/create_database.nim
 ```
 
+To execute the tests run:
+```Shell
+nimble c -r tests/database_test.nim
+```
+
 To compile and execute the Tweeter application run:
 ```Shell
 nimble c -r src/tweeter.nim
