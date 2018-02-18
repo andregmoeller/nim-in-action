@@ -1,4 +1,4 @@
-# Wrapping C Typs
+# Wrapping C Types
 
 This directory contains a small example that demonstrates how to wrap C types.
 
