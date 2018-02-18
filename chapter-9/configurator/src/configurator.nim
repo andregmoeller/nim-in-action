@@ -1,6 +1,7 @@
 import macros
 
 dumpTree:
-    config MyAppConfig:
-        address: string
-        port: int
+    type
+        MyAppConfig = ref object
+            address: string
+            port: int
