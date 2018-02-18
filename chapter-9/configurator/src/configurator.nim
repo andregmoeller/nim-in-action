@@ -27,15 +27,53 @@ template constructor(ident: untyped): untyped =
     proc `new ident`(): `ident` =
         new result
 
+proc createLoadProc(typeName: NimIdent, identDefs: seq[NimNode]): NimNode =
+    var cfgIdent = newIdentNode("cfg")
+    var filenameIdent = newIdentNode("filename")
+    var objIdent = newIdentNode("obj")
+
+    var body = newStmtList()
+    body.add quote do:
+        var `objIdent` = parseFile(`filenameIdent`)
+    
+    for identDef in identDefs:
+        let fieldNameIdent = identDef[0]
+        let fieldName = $fieldNameIdent.ident
+        case $identDef[1].ident
+        of "string":
+            body.add quote do:
+                `cfgIdent`.`fieldNameIdent` = `objIdent`[`fieldName`].getStr
+        of "int":
+            body.add quote do:
+                `cfgIdent`.`fieldNameIdent` = `objIdent`[`fieldName`].getNum().int
+        else:
+            doAssert(false, "Not Implemented")
+        
+    return newProc(newIdentNode("load"),
+        [newEmptyNode(),
+        newIdentDefs(cfgIdent, newIdentNode(typeName)),
+        newIdentDefs(filenameIdent, newIdentNode("string"))],
+        body)
+
+
 macro config(typeName: untyped, fields: untyped): untyped =
     let identDefs = toIdentDefs(fields)
     result = newStmtList()
     result.add createRefType(typeName.ident, identDefs)
     result.add getAst(constructor(typeName.ident))
+    result.add createLoadProc(typeName.ident, identDefs)
 
     echo treeRepr(result)
     echo repr(result)
 
+import json
+
 config MyAppConfig:
     address: string
     port: int
+
+var myConf = newMyAppConfig()
+myConf.load("myappconfig.json")
+echo("Address: ", myConf.address)
+echo("Port: ", myConf.port)
+
