@@ -1,6 +1,6 @@
 # Wrapping C procedures
 
-This directory contains a small example that demonstrates how to wrap c procedures.
+This directory contains a small example that demonstrates how to wrap c procedures and types.
 
 ## Compiling and Running
 
